@@ -47,3 +47,6 @@ async function fetchWeather(url) {
     console.log(`ERROR: ${ error }`);
   }
 }
+
+// api used: WEATHER: https://www.weatherapi.com/signup.aspx
+//NASA: https://data.nasa.gov/Management-Operations/NASA-Facilities-API/kgkb-q7v4/about_data
