@@ -7,38 +7,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      data.forEach((loc) => {
-        const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=e04962555dfb41ddba0150857241710&q=${loc.city}&aqi=no`;
+      data.forEach(async (loc) => {
+      
+        const lat = loc.location.latitude; 
+        const lon = loc.location.longitude; 
+        const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=e04962555dfb41ddba0150857241710&q=${lat} ${lon}&aqi=no`;
 
-        fetchWeather(weatherUrl).then((weather) => console.log(weather));
-        console.log(weather2);
-        
+        const weather = await fetchWeather(weatherUrl); 
+        const currWeatherCondition = weather.current.condition.text;
+        const tempInF = weather.current.temp_f;
+        console.log('weatherText', weather.current.condition.text); 
+        console.log('weatherText', weather.current.temp_f)
+
         const listItem = document.createElement('li');
-        listItem.textContent = `facility : ${loc.facility}, location: ${loc.city}, ${loc.state}, weather: ${weather2}`;
+
+        const facilityH2 = document.createElement('h2')
+        facilityH2.textContent = `${loc.facility}`; 
+
+        const locPara = document.createElement('p'); 
+        locPara.textContent = `location: ${loc.city}, ${loc.state}`;
+
+        const weatherPara = document.createElement('p'); 
+        weatherPara.textContent = `${currWeatherCondition}, temp: ${tempInF}°F`;
+
+        listItem.append(facilityH2, locPara, weatherPara);
         facilities.appendChild(listItem);
       });
     });
 });
 
-function fetchWeather(url) {
-  let weather;
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      console.log('data', data);
-      weather = data;
-      console.log('weather in fetch', weather);
-      return weather;
-    });
+
+async function fetchWeather(url) {
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+
+    console.log(`ERROR: ${ error }`);
+  }
 }
-
-// async function fetchWeather(url) {
-//   try {
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     return data;
-//   } catch (error) {
-
-//     console.log(`ERROR: ${ error }`);
-//   }
-// }
