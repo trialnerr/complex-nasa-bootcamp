@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     .then((data) => {
       const firstTen = data.slice(0, 10); 
       firstTen.forEach(async (loc) => {
-        const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=e04962555dfb41ddba0150857241710&q=${loc.city}&aqi=no`;
+        const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${loc.city}&aqi=no`;
 
         const weather = await fetchWeather(weatherUrl); 
         console.log('weather', weather); 
@@ -40,13 +40,3 @@ function fetchWeather(url) {
   
 }
 
-// async function fetchWeather(url) {
-//   try {
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     return data;
-//   } catch (error) {
-
-//     console.log(`ERROR: ${ error }`);
-//   }
-// }
